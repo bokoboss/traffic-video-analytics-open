@@ -1,0 +1,22 @@
+{
+  "manifest_version": "benchmark-manifest-v1",
+  "benchmark_id": "m5-stub-smoke",
+  "clip_id": "synthetic-two-crossings",
+  "media_fingerprint": "synthetic_fixture_media_sha256",
+  "usage_status": "synthetic_fixture",
+  "clip_start_ms": 0,
+  "clip_end_ms": 3600000,
+  "camera_description": "Synthetic normalized coordinate fixture",
+  "road_context": "single bidirectional counting line",
+  "weather": "not_applicable",
+  "lighting": "not_applicable",
+  "resolution": "normalized",
+  "frame_rate": "event_samples",
+  "timebase": "pts_ms",
+  "scene_revision": "benchmark_scene_v1",
+  "ground_truth": {
+    "grand_total": 2
+  },
+  "exclusions": [],
+  "notes": "Engineering smoke fixture only; not real detector evidence."
+}

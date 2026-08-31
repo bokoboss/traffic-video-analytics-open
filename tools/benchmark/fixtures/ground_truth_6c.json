@@ -1,0 +1,67 @@
+{
+  "ground_truth_manifest_version": "ground-truth-v1",
+  "benchmark_source_id": "synthetic-calibration-01",
+  "source_fingerprint_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "ground_truth_revision": "synthetic-gt-calibration-v1",
+  "scene_revision": "synthetic-scene-calibration-v1",
+  "status": "ADJUDICATED",
+  "created_at": "2026-01-01T00:00:00+00:00",
+  "created_by": "ci-fixture",
+  "events": [
+    {
+      "ground_truth_event_id": "gt-cal-001",
+      "counting_line_id": "line-main",
+      "canonical_direction": "A_TO_B",
+      "crossing_pts_ms": 1000,
+      "engineering_class": "PASSENGER_VEHICLE",
+      "classification_status": "CONFIRMED_MAPPING",
+      "timestamp_status": "CONFIRMED",
+      "annotation_status": "VALID",
+      "identity_id": "vehicle-001",
+      "evidence_refs": {"source_frame_pts_ms": 1000, "source_frame_index": 30}
+    },
+    {
+      "ground_truth_event_id": "gt-cal-002",
+      "counting_line_id": "line-main",
+      "canonical_direction": "B_TO_A",
+      "crossing_pts_ms": 900000,
+      "engineering_class": "MOTORCYCLE",
+      "classification_status": "CONFIRMED_MAPPING",
+      "timestamp_status": "CONFIRMED",
+      "annotation_status": "VALID",
+      "identity_id": "vehicle-002",
+      "evidence_refs": {"source_frame_pts_ms": 900000}
+    },
+    {
+      "ground_truth_event_id": "gt-cal-ignored",
+      "counting_line_id": "line-main",
+      "canonical_direction": "A_TO_B",
+      "crossing_pts_ms": 1800000,
+      "engineering_class": "UNKNOWN",
+      "classification_status": "UNKNOWN",
+      "timestamp_status": "UNSCORABLE",
+      "annotation_status": "IGNORE",
+      "evidence_refs": {"note": "occluded synthetic diagnostic"}
+    }
+  ],
+  "reviewer_annotations": [
+    {
+      "reviewer_id": "reviewer-a",
+      "ground_truth_event_id": "gt-cal-001",
+      "annotation_revision": "r1",
+      "event_decision": "VALID",
+      "class_decision": "PASSENGER_VEHICLE",
+      "direction_decision": "A_TO_B",
+      "timestamp_decision": 1000
+    },
+    {
+      "reviewer_id": "reviewer-b",
+      "ground_truth_event_id": "gt-cal-001",
+      "annotation_revision": "r1",
+      "event_decision": "VALID",
+      "class_decision": "PASSENGER_VEHICLE",
+      "direction_decision": "A_TO_B",
+      "timestamp_decision": 1010
+    }
+  ]
+}

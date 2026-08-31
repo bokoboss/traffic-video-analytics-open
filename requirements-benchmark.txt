@@ -1,0 +1,10 @@
+# Optional Milestone 5.1 benchmark environment seed.
+#
+# This file is intentionally separate from requirements-dev.txt so detector,
+# tracker, model-runtime, and media-evaluation dependencies cannot contaminate
+# normal application setup.
+#
+# No heavy AI packages are pinned yet because no benchmark candidate has legal
+# weight approval and no representative benchmark dataset is available in this
+# repository. Add candidate-specific packages only after recording license,
+# version, weight hash, and dataset prerequisites in docs/development/.

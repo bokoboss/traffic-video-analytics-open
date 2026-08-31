@@ -1,0 +1,30 @@
+[
+  {
+    "source_event_id": "auto-cal-001",
+    "technical_key": "fixture-auto-001",
+    "source_fingerprint_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "scene_revision": "synthetic-scene-calibration-v1",
+    "counting_line_id": "line-main",
+    "canonical_direction": "A_TO_B",
+    "event_pts_ms": 1010,
+    "engineering_class": "PASSENGER_VEHICLE",
+    "track_id": "track-001",
+    "track_observation_count": 12,
+    "track_duration_ms": 1100,
+    "configuration_revision": "fixture-config-v1"
+  },
+  {
+    "source_event_id": "auto-cal-002",
+    "technical_key": "fixture-auto-002",
+    "source_fingerprint_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "scene_revision": "synthetic-scene-calibration-v1",
+    "counting_line_id": "line-main",
+    "canonical_direction": "B_TO_A",
+    "event_pts_ms": 900100,
+    "engineering_class": "UNKNOWN",
+    "track_id": "track-002",
+    "track_observation_count": 1,
+    "track_duration_ms": 0,
+    "configuration_revision": "fixture-config-v1"
+  }
+]

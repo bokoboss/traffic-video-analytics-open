@@ -1,0 +1,22 @@
+{
+  "name": "traffic-video-analytics",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "dev:frontend": "pnpm --filter @traffic-video-analytics/frontend run dev",
+    "build:frontend": "pnpm --filter @traffic-video-analytics/frontend run build",
+    "test:frontend": "pnpm --filter @traffic-video-analytics/frontend run test",
+    "test:e2e": "pnpm --filter @traffic-video-analytics/frontend run test:e2e",
+    "lint:frontend": "pnpm --filter @traffic-video-analytics/frontend run lint",
+    "generate:api": "python scripts/export_openapi.py && python scripts/generate_ts_client.py",
+    "check:api": "python scripts/export_openapi.py && python scripts/generate_ts_client.py && git diff --exit-code packages/contracts/openapi.json apps/frontend/src/api/generated.ts"
+  },
+  "workspaces": [
+    "apps/frontend"
+  ],
+  "devDependencies": {
+    "@playwright/test": "1.54.1"
+  }
+}

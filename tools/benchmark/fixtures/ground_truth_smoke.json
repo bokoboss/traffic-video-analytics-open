@@ -1,0 +1,22 @@
+{
+  "ground_truth_version": "benchmark-ground-truth-v1",
+  "annotation_set_id": "gt_json_smoke",
+  "events": [
+    {
+      "event_id": "truth_1",
+      "clip_id": "clip_json_smoke",
+      "object_ref": "vehicle_1",
+      "line_id": "line_main",
+      "direction": "a_to_b",
+      "crossing_timestamp_ms": 1000,
+      "timestamp_tolerance_ms": 100,
+      "observable_class": "car",
+      "tims_class": "",
+      "included": true,
+      "uncertainty": "certain",
+      "annotator": "json-fixture",
+      "reviewer": "json-fixture",
+      "review_status": "reviewed"
+    }
+  ]
+}

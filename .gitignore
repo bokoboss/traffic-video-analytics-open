@@ -1,0 +1,94 @@
+# Python
+.venv/
+.venv-ai/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.local.toml
+Ultralytics/
+
+# Local application data
+.agent-work/
+.local-data/
+.local-tools/
+data/
+datasets/
+models/
+weights/
+runs/
+output/
+outputs/
+exports/
+evidence/
+temporary/
+tmp/
+
+# Databases
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+
+# Model and inference artifacts
+*.pt
+*.pth
+*.onnx
+*.engine
+*.safetensors
+*.tflite
+*.trt
+*.weights
+
+# Large media
+*.mp4
+*.mov
+*.mkv
+*.avi
+*.m4v
+*.webm
+*.mpeg
+*.mpg
+*.wav
+*.flac
+*.aac
+
+# Certificates and private keys
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs
+*.log
+
+# Keep approved text fixtures only through explicit exceptions
+!tests/fixtures/**/*.json

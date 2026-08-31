@@ -1,0 +1,10 @@
+{
+  "config_version": "benchmark-config-v1",
+  "detector": "stub-fixture-detector",
+  "tracker": "stub-deterministic-tracker",
+  "device": "cpu",
+  "confidence_threshold": 0.25,
+  "representative_point": "bottom_center",
+  "weight_sha256": null,
+  "random_seed": 0
+}

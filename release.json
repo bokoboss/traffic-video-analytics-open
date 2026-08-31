@@ -1,0 +1,7 @@
+{
+  "schema_version": "release-identity-v1",
+  "application_name": "Traffic Video Analytics",
+  "release_version": "0.1.0-pilot",
+  "release_channel": "pilot",
+  "build_label": "Pilot Release"
+}

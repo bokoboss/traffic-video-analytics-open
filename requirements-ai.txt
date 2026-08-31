@@ -1,0 +1,19 @@
+# Optional Milestone 5.2B AI pilot runtime.
+#
+# Do not install this file during normal application setup. Use
+# scripts/prepare_ai_runtime.py --accept-install to create the ignored .venv-ai
+# environment explicitly.
+#
+# Licenses, candidate provenance, and redistribution policy are recorded in
+# model_registry.json, THIRD_PARTY_NOTICES.md, and
+# docs/development/dependency_license_register.md.
+--index-url https://download.pytorch.org/whl/cu128
+--extra-index-url https://pypi.org/simple
+torch==2.10.0
+torchvision==0.25.0
+ultralytics==8.4.103
+trackers==2.5.0.post0
+supervision==0.29.1
+numpy==2.2.6
+pillow==12.3.0
+opencv-python==4.12.0.88

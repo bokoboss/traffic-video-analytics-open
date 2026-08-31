@@ -1,0 +1,100 @@
+:root {
+  color-scheme: light;
+
+  --color-canvas: #f6f4ef;
+  --color-surface: #fcfbf8;
+  --color-elevated: #ffffff;
+
+  --color-text-primary: #182027;
+  --color-text-secondary: #5d646b;
+  --color-text-tertiary: #7d8389;
+  --color-text-inverse: #ffffff;
+
+  --color-border-subtle: #e8e5de;
+  --color-border-default: #d9d6cf;
+  --color-border-strong: #b8b5ae;
+
+  --color-primary: #17354d;
+  --color-primary-hover: #102a3e;
+  --color-primary-active: #0c2233;
+  --color-primary-subtle: #e7edf1;
+
+  --color-critical: #b03d36;
+  --color-critical-hover: #96312c;
+  --color-critical-subtle: #f7e7e4;
+
+  --color-success: #2e6652;
+  --color-success-subtle: #e4f0eb;
+  --color-warning: #8a5d1e;
+  --color-warning-subtle: #f5ecdd;
+  --color-info: #2b607f;
+  --color-info-subtle: #e4eef4;
+
+  --color-video-ground: #14191e;
+  --color-video-panel: #1b2229;
+  --color-video-border: #34404a;
+  --color-video-text: #f5f6f4;
+  --color-video-muted: #aeb7bf;
+
+  --color-geometry-count-primary: #e35a50;
+  --color-geometry-count-reverse: #5ba4d6;
+  --color-geometry-entry: #d39a3c;
+  --color-geometry-exit: #55a87e;
+  --color-geometry-roi: #aab9c5;
+  --color-geometry-exclusion: #b18aaf;
+  --color-geometry-pedestrian: #59b7a8;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --radius-small: 4px;
+  --radius-control: 8px;
+  --radius-panel: 12px;
+  --radius-workspace: 16px;
+  --radius-pill: 999px;
+
+  --size-control-compact: 36px;
+  --size-control-default: 40px;
+  --size-control-comfortable: 44px;
+  --size-topbar: 56px;
+  --size-workflow-rail: 208px;
+  --size-inspector: 320px;
+  --size-timeline: 72px;
+
+  --font-display: "Anuphan", "IBM Plex Sans Thai", "Noto Sans Thai", sans-serif;
+  --font-ui: "IBM Plex Sans Thai", "Noto Sans Thai", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "Cascadia Mono", monospace;
+
+  --motion-instant: 80ms;
+  --motion-fast: 140ms;
+  --motion-standard: 200ms;
+  --motion-panel: 240ms;
+  --motion-shared: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --shadow-float:
+    0 1px 2px rgb(24 32 39 / 0.08),
+    0 8px 24px rgb(24 32 39 / 0.08),
+    0 24px 60px rgb(24 32 39 / 0.05);
+
+  --focus-ring: 0 0 0 3px rgb(43 96 127 / 0.24);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-instant: 0ms;
+    --motion-fast: 0ms;
+    --motion-standard: 0ms;
+    --motion-panel: 0ms;
+    --motion-shared: 0ms;
+  }
+}
