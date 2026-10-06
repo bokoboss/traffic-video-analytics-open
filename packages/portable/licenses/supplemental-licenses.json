@@ -1,0 +1,19 @@
+{
+  "schema_version": "supplemental-python-licenses-v1",
+  "records": [
+    {
+      "normalized_package_name": "nvidia-ml-py",
+      "version": "13.610.43",
+      "locked_wheel_filename": "nvidia_ml_py-13.610.43-py3-none-any.whl",
+      "locked_wheel_sha256": "f13c72698edef492f985cc225f14faafe68ae065a2e407f45bdf6f4b9b43fde8",
+      "license_path": "packages/portable/licenses/python/nvidia-ml-py/LICENSE.txt",
+      "license_text_sha256": "c2b7bd35d96d224a2c503971f86b1d88668a6a8a005e24a9e3a10582ee39278b",
+      "source_url": "https://pypi.org/project/nvidia-ml-py/13.610.43/",
+      "source_distribution_filename": "nvidia_ml_py-13.610.43.tar.gz",
+      "source_distribution_member": "nvidia_ml_py-13.610.43/README.txt",
+      "source_text_section": "LICENSE (trailing README blank separator omitted)",
+      "source_distribution_url": "https://files.pythonhosted.org/packages/f0/b5/a8fbc356f768fa5c9cfd646668fd7d34bf55bdd1c6e20754642a64d930d4/nvidia_ml_py-13.610.43.tar.gz",
+      "source_distribution_sha256": "65437eb73d68d0c62c931ca4d45038472faff03bd0b8729abba4b899f70d60f2"
+    }
+  ]
+}

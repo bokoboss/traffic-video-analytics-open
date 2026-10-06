@@ -26,9 +26,7 @@ PRIVATE_KEY_NAMES = {
     "root", "models_dir", "ai_venv_expected", "managed_media_path", "source_path",
     "preview_path", "database_path", "local_data_dir",
 }
-PRIVATE_STRING = re.compile(
-    r"(?i)(?:[A-Z]:\\|/" + "Users" + r"/|/" + "home" + r"/|/" + "private" + r"/)[^\s\"']+"
-)
+PRIVATE_STRING = re.compile(r"(?i)(?:[A-Z]:\\|/Users/|/home/|/private/)[^\s\"']+")
 TOKEN_STRING = re.compile(r"(?i)(bearer\s+|token[=:]\s*|secret[=:]\s*|password[=:]\s*)[^\s,\"']+")
 
 

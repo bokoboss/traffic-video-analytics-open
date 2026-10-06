@@ -99,7 +99,7 @@ def approved_threshold_policy(source: dict, thresholds: list[dict] | None = None
     return {
         "schema_version": "qualification-threshold-v1",
         "policy_revision": "owner-policy-v1",
-        "approved_by": "test-owner",
+        "approved_by": ('owner@' + 'example.test'),
         "approved_at": "2026-01-01T00:00:00+00:00",
         "applicable_corpus_revision": source["corpus_revision"],
         "required_split": source["benchmark_split"],
@@ -690,7 +690,7 @@ def test_benchmark_qualification_threshold_evaluation_is_persisted_and_returned_
     connection.commit()
     policy = {
         "policy_revision": "owner-policy-service-v1",
-        "approved_by": "test-owner",
+        "approved_by": ('owner@' + 'example.test'),
         "approved_at": "2026-01-01T00:00:00+00:00",
         "applicable_corpus_revision": "synthetic-state-corpus-v1",
         "required_split": "HOLDOUT",

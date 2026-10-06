@@ -4,7 +4,7 @@
 
 - `pyproject.toml` and `requirements-dev.txt`: Python application and validation dependencies.
 - `package.json`: npm workspace commands for the frontend and Playwright.
-- `.github/workflows/ci.yml`: Windows CI for public-release validation, backend tests, OpenAPI export, frontend build and browser checks.
+- `.github/workflows/ci.yml`: Windows CI for seed checks, backend tests, OpenAPI export, frontend build and browser checks.
 
 ## Applications
 

@@ -80,7 +80,7 @@ Interfaces must exist conceptually for:
 - `ArtifactStore`
 - `ExportAdapter`
 
-The exact package structure is for implementation to finalize during the initial product iteration.
+The exact package structure is for Codex to propose in Milestone 0–1.
 
 ## Stable migration contracts
 

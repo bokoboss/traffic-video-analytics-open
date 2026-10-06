@@ -112,3 +112,4 @@ def validate_normalized_box(box: DetectorBox) -> tuple[str, ...]:
     if not 0 <= box.confidence <= 1:
         errors.append("confidence_out_of_range")
     return tuple(errors)
+

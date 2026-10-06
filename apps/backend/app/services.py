@@ -66,6 +66,8 @@ from .real_inference import (
     configuration_revision,
     run_real_video_inference,
 )
+from .runtime_paths import ai_python as configured_ai_python
+from .runtime_paths import ai_site_packages, model_dir, source_root
 from .scene_geometry import SCENE_SCHEMA_VERSION, SceneValidationError, scene_semantic_hash, validate_scene_geometry
 from .schemas import SceneGeometrySave, SourceCreate, TimeConfigurationUpdate
 from .synthetic_counting import (
@@ -1187,7 +1189,7 @@ class FoundationService:
         self._transition_processing_job(run_id, JobState.RUNNING, ProgressPhase.PREPARING_MEDIA, 10, "preparing_media")
         self.connection.commit()
         managed_path = Path(str(source["managed_media_path"] or ""))
-        local_data_dir = Path(os.getenv("TVA_LOCAL_DATA_DIR", str(Path(__file__).resolve().parents[3] / ".local-data"))).expanduser().resolve()
+        local_data_dir = Path(os.getenv("TVA_LOCAL_DATA_DIR", str(source_root() / ".local-data"))).expanduser().resolve()
         try:
             managed_path.resolve().relative_to(local_data_dir)
         except ValueError:
@@ -1360,7 +1362,7 @@ class FoundationService:
             final_cancelled = False
             try:
                 result = run_real_video_inference(
-                    root=Path(__file__).resolve().parents[3],
+                    root=source_root(),
                     run_id=run_id,
                     source_path=managed_path.resolve(),
                     source_fingerprint=str(source["fingerprint_sha256"]),
@@ -1883,7 +1885,7 @@ class FoundationService:
         active_count = self.connection.execute(
             "SELECT COUNT(*) AS count FROM analysis_runs WHERE job_state IN ('QUEUED', 'STARTING', 'RUNNING', 'CANCELLATION_REQUESTED')"
         ).fetchone()["count"]
-        root = Path(__file__).resolve().parents[3]
+        root = source_root()
         registry_path = root / "model_registry.json"
         media = self.media_runtime_status()
         runtime_payload: dict[str, Any] = {"blockers": ["model_registry_missing"], "warnings": []}
@@ -1914,7 +1916,7 @@ class FoundationService:
             and detector_ready
             and tracker_ready
             and not relevant_blockers
-            and Path(__file__).resolve().parents[2].joinpath("worker", "processing_worker.py").exists()
+            and source_root().joinpath("apps", "worker", "processing_worker.py").exists()
         )
         torch_payload = runtime_payload.get("torch", {})
         resolved_device = "AUTO"
@@ -2370,7 +2372,7 @@ class FoundationService:
             )
         managed_path = Path(str(source["managed_media_path"] or ""))
         local_data_dir = Path(
-            os.getenv("TVA_LOCAL_DATA_DIR", str(Path(__file__).resolve().parents[3] / ".local-data"))
+            os.getenv("TVA_LOCAL_DATA_DIR", str(source_root() / ".local-data"))
         ).expanduser().resolve()
         try:
             managed_path.resolve().relative_to(local_data_dir)
@@ -2400,7 +2402,7 @@ class FoundationService:
             self._emit_preview_event(stage, preview_id=preview_id, worker_id=worker_id, stage=stage, ownership_state="RUNNING")
             try:
                 result = run_real_video_inference(
-                    root=Path(__file__).resolve().parents[3],
+                    root=source_root(),
                     run_id=preview_id,
                     source_path=managed_path.resolve(),
                     source_fingerprint=str(source["fingerprint_sha256"]),
@@ -2884,8 +2886,9 @@ class FoundationService:
         )
 
     def _fast_ai_runtime_payload(self, root: Path, registry: dict[str, Any]) -> dict[str, Any]:
-        ai_python = root / ".venv-ai" / "Scripts" / "python.exe"
-        site_packages = root / ".venv-ai" / "Lib" / "site-packages"
+        ai_python = configured_ai_python(root)
+        site_package_roots = ai_site_packages(root)
+        site_packages = next((path for path in site_package_roots if path.exists()), site_package_roots[0])
 
         def package_version(package: str) -> str | None:
             if not site_packages.exists():
@@ -2923,7 +2926,7 @@ class FoundationService:
         weights: list[dict[str, Any]] = []
         blockers: list[str] = []
         warnings: list[str] = ["cuda_probe_deferred_to_worker"]
-        models_dir = root / ".local-tools" / "models"
+        models_dir = model_dir(root)
         for record in registry.get("models", []):
             filename = record.get("model_filename")
             path = models_dir / str(filename) if filename else None

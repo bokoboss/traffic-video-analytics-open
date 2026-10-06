@@ -32,12 +32,10 @@ python apps/worker/mock_worker.py --run-id run_mock
 
 ## Frontend
 
-The repository pins `pnpm@11.9.0` through `package.json`. On managed Windows
-machines, use an approved portable Node.js flow or a system installation that
-meets the documented version range:
+The repository pins `pnpm@11.9.0` through `package.json`. On company-managed Windows machines, use the launcher-supported portable Node.js flow instead of installing Node system-wide:
 
 ```powershell
-$env:TVA_NODE_DIR="<APPROVED_NODE_DIRECTORY>"
+$env:TVA_NODE_DIR=(Join-Path (Get-Location) ".local-tools\node")
 python scripts\prepare_portable_pnpm.py --accept-download
 python scripts\check_node_runtime.py
 setup_app.bat

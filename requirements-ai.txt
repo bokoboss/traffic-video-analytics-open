@@ -4,9 +4,8 @@
 # scripts/prepare_ai_runtime.py --accept-install to create the ignored .venv-ai
 # environment explicitly.
 #
-# Licenses, candidate provenance, and redistribution policy are recorded in
-# model_registry.json, THIRD_PARTY_NOTICES.md, and
-# docs/development/dependency_license_register.md.
+# Licenses and candidate provenance are recorded in model_registry.json and
+# docs/development/milestone5_2b_open_model_stack.md.
 --index-url https://download.pytorch.org/whl/cu128
 --extra-index-url https://pypi.org/simple
 torch==2.10.0

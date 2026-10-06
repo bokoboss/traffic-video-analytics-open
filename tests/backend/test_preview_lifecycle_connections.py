@@ -254,7 +254,9 @@ def test_real_preview_callbacks_complete_under_concurrency_and_remain_preview_on
         state_events = [
             row["event_type"]
             for row in worker.connection.execute(
-                "SELECT event_type FROM preview_run_state_events WHERE preview_run_id = ?", (preview["id"],)
+                "SELECT event_type FROM preview_run_state_events "
+                "WHERE preview_run_id = ? ORDER BY created_at, rowid",
+                (preview["id"],),
             )
         ]
         assert state_events[0:2] == ["QUEUED", "CLAIMED"]

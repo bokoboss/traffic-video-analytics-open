@@ -18,7 +18,7 @@ def _git_commit_sha() -> str:
     try:
         result = subprocess.run(
             ["git", "rev-parse", "HEAD"],
-            cwd=REPOSITORY_ROOT,
+            cwd=_release_root(),
             capture_output=True,
             text=True,
             check=False,
@@ -28,6 +28,16 @@ def _git_commit_sha() -> str:
         return "unknown"
     value = result.stdout.strip()
     return value if result.returncode == 0 and len(value) <= 64 else "unknown"
+
+
+def _release_root() -> Path:
+    configured = os.getenv("TVA_SOURCE_ROOT") or os.getenv("TVA_APP_ROOT")
+    return Path(configured).expanduser().resolve() if configured else REPOSITORY_ROOT
+
+
+def _release_file() -> Path:
+    configured = os.getenv("TVA_RELEASE_FILE")
+    return Path(configured).expanduser().resolve() if configured else _release_root() / "release.json"
 
 
 def release_identity() -> dict[str, Any]:
@@ -41,7 +51,7 @@ def release_identity() -> dict[str, Any]:
         "build_label": "Pilot Release",
     }
     try:
-        loaded = json.loads(RELEASE_FILE.read_text(encoding="utf-8"))
+        loaded = json.loads(_release_file().read_text(encoding="utf-8"))
         if isinstance(loaded, dict):
             for key in ("schema_version", "application_name", "release_version", "release_channel", "build_label"):
                 if isinstance(loaded.get(key), str) and loaded[key].strip():

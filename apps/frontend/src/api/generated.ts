@@ -150,3 +150,4 @@ export type OperationalCandidateSelectionCreate = components['schemas']['Operati
 export type OperationalCandidateSelectionOut = components['schemas']['OperationalCandidateSelectionOut'];
 export type CapabilityValidationCreate = components['schemas']['CapabilityValidationCreate'];
 export type CapabilityValidationOut = components['schemas']['CapabilityValidationOut'];
+
