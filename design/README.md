@@ -7,7 +7,7 @@
 
 These files define visual values, not a frontend architecture.
 
-The implementation may adapt them into the selected styling system, but must preserve semantic token names and document any changed values.
+Codex may adapt them into the selected styling system, but must preserve semantic token names and document any changed values.
 
 ## Font note
 

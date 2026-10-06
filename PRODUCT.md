@@ -27,8 +27,7 @@ and can produce separate `A_TO_B` and `B_TO_A` counts. Direction is derived from
 stable side transition, not from an arrowhead, road compass direction, vehicle
 heading, drawing gesture or frontend-only state.
 
-The canonical signed-side convention is documented in the counting-semantics
-architecture note. Scene save,
+The canonical signed-side convention is documented in ADR 0019. Scene save,
 reload, endpoint editing, coordinate scaling, processing, review, aggregation
 and export must preserve physical side meaning.
 
@@ -102,7 +101,8 @@ Do not produce:
 
 ## Authoritative project documents
 
-- `docs/architecture/`
-- `docs/api/api_contract.md`
+- `docs/inputs/product_requirements.md`
+- `docs/inputs/product_constraints.md`
+- `docs/inputs/accepted_development_plan.md`
 - `DESIGN.md`
 - `docs/ux/ux_ui_bible.md`

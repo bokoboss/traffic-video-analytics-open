@@ -1,6 +1,6 @@
 # Local Runtime Launcher
 
-The local Windows launcher scripts support product review and development validation.
+Milestone 5 adds local Windows launcher scripts for product review and developer validation.
 
 ## Entry Points
 
@@ -21,9 +21,9 @@ The launcher does not require a system-wide Node.js installation. It resolves an
 1. configured directory from `TVA_NODE_DIR`;
 2. repository-local portable runtime at `.local-tools\node\`;
 3. normal system `PATH`;
-4. verified pnpm-managed runtime fallback from the configured package-manager runtime.
+4. verified pnpm-managed runtime fallback from the existing Codex dependency layout.
 
-The supported Node.js range is `>=20.19.0` and `<27.0.0`. The pinned package manager is `pnpm@11.9.0`. Node.js v24 LTS remains the recommended stable default. Other supported versions should pass the local portable-runtime checks before use.
+The supported Node.js range is `>=20.19.0` and `<27.0.0`. The pinned package manager is `pnpm@11.9.0`. Node.js v24 LTS remains the recommended stable default. Node.js v26.5.0 Current is allowed only because it passed the portable-runtime candidate evaluation recorded in `docs/development/node26_portable_runtime_evaluation.md`.
 
 The launcher modifies `PATH` only for child setup/run processes. It does not modify the permanent user or machine `PATH`, registry, Windows services or administrator-level configuration.
 
@@ -117,6 +117,6 @@ Core readiness may be available for diagnosis while application readiness is
 blocked. Unavailable FFmpeg, model runtime or model weights keep a synthetic
 workflow visibly separate from real-media processing.
 
-## Runtime Note
+## Current Environment Note
 
-On a clean machine, provide Node.js and pnpm through `TVA_NODE_DIR`, `.local-tools`, or the system `PATH` according to the launcher priority above. FFmpeg and ffprobe are optional for synthetic-only checks but are required for real-media metadata inspection and reference-frame extraction.
+On the validation machine, Node.js was available through the Codex bundled runtime used by pnpm and through the evaluated repository-local portable Node.js v26.5.0 runtime, not as `node` in a fresh shell PATH. FFmpeg and ffprobe were not installed. The application is app-review ready when Node.js and pnpm are resolved through the launcher, but media runtime qualification remains blocked until FFmpeg/ffprobe are installed or configured.

@@ -55,18 +55,13 @@ tmp/
 *.db-wal
 *.sqlite
 *.sqlite3
-*.sqlite-shm
-*.sqlite-wal
 
 # Model and inference artifacts
 *.pt
 *.pth
 *.onnx
 *.engine
-*.safetensors
-*.tflite
 *.trt
-*.weights
 
 # Large media
 *.mp4
@@ -74,21 +69,10 @@ tmp/
 *.mkv
 *.avi
 *.m4v
-*.webm
-*.mpeg
-*.mpg
-*.wav
-*.flac
-*.aac
-
-# Certificates and private keys
-*.pem
-*.key
-*.p12
-*.pfx
 
 # Logs
 *.log
 
-# Keep approved text fixtures only through explicit exceptions
+# Keep approved tiny fixtures only through explicit exceptions
+!tests/fixtures/**/*.mp4
 !tests/fixtures/**/*.json

@@ -25,6 +25,7 @@ from .engineering_outputs import (
     compact_track_evidence,
 )
 from .media import media_runtime_status
+from .runtime_paths import ai_site_packages, model_dir
 from .processing_profiles import (
     CLASSIFICATION_POLICY_REVISION,
     CROSSING_POLICY_REVISION,
@@ -356,9 +357,7 @@ def configuration_revision(config: dict[str, Any]) -> str:
 
 
 def add_ai_site_packages(root: Path) -> None:
-    candidates = [root / ".venv-ai" / "Lib" / "site-packages"]
-    candidates.extend((root / ".venv-ai" / "lib").glob("python*/site-packages"))
-    for candidate in reversed(candidates):
+    for candidate in reversed(ai_site_packages(root)):
         if candidate.exists() and str(candidate) not in sys.path:
             sys.path.insert(0, str(candidate))
 
@@ -376,7 +375,7 @@ def resolve_real_runtime(root: Path, config: RealProcessingConfig) -> RealProces
     )
     if detector_record is None or tracker_record is None:
         raise RealInferenceError("model_registry_entry_missing", "runtime", "Primary detector or tracker is not registered.")
-    weight_path = root / ".local-tools" / "models" / str(detector_record.get("model_filename", ""))
+    weight_path = model_dir(root) / str(detector_record.get("model_filename", ""))
     if not weight_path.is_file() or weight_path.is_symlink():
         raise RealInferenceError("weight_missing", "runtime", str(weight_path), retryable=True)
     expected_hash = detector_record.get("sha256")
@@ -399,7 +398,7 @@ def _runtime_provenance(root: Path, config: RealProcessingConfig) -> dict[str, s
     registry = load_registry(root / "model_registry.json")
     detector = next(item for item in registry["models"] if item["model_id"] == config.detector_id)
     tracker = next(item for item in registry["models"] if item["model_id"] == config.tracker_id)
-    weight_path = root / ".local-tools" / "models" / str(detector["model_filename"])
+    weight_path = model_dir(root) / str(detector["model_filename"])
     return {
         "detector_id": str(detector["model_id"]),
         "detector_version": str(detector.get("exact_version") or "unknown"),
@@ -739,7 +738,7 @@ class UltralyticsDetectorAdapter:
             raise RealInferenceError("detector_import_failed", "runtime", str(exc), retryable=True) from exc
         registry = load_registry(root / "model_registry.json")
         record = next(item for item in registry["models"] if item["model_id"] == config.detector_id)
-        weight_path = root / ".local-tools" / "models" / str(record["model_filename"])
+        weight_path = model_dir(root) / str(record["model_filename"])
         started = time.perf_counter()
         try:
             self.model = YOLO(str(weight_path))

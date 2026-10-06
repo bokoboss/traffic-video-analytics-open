@@ -4,7 +4,6 @@ import argparse
 import hashlib
 import json
 import os
-import shutil
 import sqlite3
 import tempfile
 from datetime import datetime, timezone
@@ -42,22 +41,39 @@ def _integrity_check(path: Path) -> None:
         connection.close()
 
 
+def _sqlite_backup_to_path(source: Path, destination: Path) -> None:
+    """Materialize a consistent SQLite backup, including committed WAL state."""
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temp_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            prefix="tva-backup-", suffix=".sqlite3", dir=destination.parent, delete=False
+        ) as handle:
+            temp_path = Path(handle.name)
+        source_connection = sqlite3.connect(source)
+        try:
+            destination_connection = sqlite3.connect(temp_path)
+            try:
+                source_connection.backup(destination_connection)
+                destination_connection.commit()
+            finally:
+                destination_connection.close()
+        finally:
+            source_connection.close()
+        _integrity_check(temp_path)
+        os.replace(temp_path, destination)
+    finally:
+        if temp_path and temp_path.exists():
+            temp_path.unlink()
+
+
 def _backup(source: Path, destination: Path) -> dict[str, Any]:
     if not source.is_file():
         raise FileNotFoundError(f"database_not_found:{source}")
     destination.parent.mkdir(parents=True, exist_ok=True)
     if destination.exists():
         raise FileExistsError(f"backup_exists:{destination}")
-    source_connection = sqlite3.connect(source)
-    try:
-        destination_connection = sqlite3.connect(destination)
-        try:
-            source_connection.backup(destination_connection)
-            destination_connection.commit()
-        finally:
-            destination_connection.close()
-    finally:
-        source_connection.close()
+    _sqlite_backup_to_path(source, destination)
     _integrity_check(destination)
     result = {
         "operation": "backup",
@@ -82,6 +98,12 @@ def _schema_version(path: Path) -> str | None:
         connection.close()
 
 
+def _remove_sqlite_sidecars(path: Path) -> None:
+    """Remove journal files that belong to the database being replaced."""
+    for suffix in ("-wal", "-shm", "-journal"):
+        path.with_name(f"{path.name}{suffix}").unlink(missing_ok=True)
+
+
 def _restore(source: Path, destination: Path) -> dict[str, Any]:
     if not source.is_file():
         raise FileNotFoundError(f"backup_not_found:{source}")
@@ -90,23 +112,15 @@ def _restore(source: Path, destination: Path) -> dict[str, Any]:
     safety_copy: Path | None = None
     if destination.exists():
         safety_copy = destination.with_name(f"{destination.name}.pre-restore-{_timestamp()}.bak")
-        shutil.copy2(destination, safety_copy)
+        _sqlite_backup_to_path(destination, safety_copy)
     temp_path: Path | None = None
     try:
         with tempfile.NamedTemporaryFile(prefix="tva-restore-", suffix=".sqlite3", dir=destination.parent, delete=False) as handle:
             temp_path = Path(handle.name)
-        source_connection = sqlite3.connect(source)
-        try:
-            destination_connection = sqlite3.connect(temp_path)
-            try:
-                source_connection.backup(destination_connection)
-                destination_connection.commit()
-            finally:
-                destination_connection.close()
-        finally:
-            source_connection.close()
+        _sqlite_backup_to_path(source, temp_path)
         _integrity_check(temp_path)
         os.replace(temp_path, destination)
+        _remove_sqlite_sidecars(destination)
     finally:
         if temp_path and temp_path.exists():
             temp_path.unlink()

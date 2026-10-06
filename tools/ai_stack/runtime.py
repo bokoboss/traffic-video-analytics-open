@@ -10,6 +10,8 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from tools.benchmark.runtime import gpu_status
+from apps.backend.app.runtime_paths import ai_python as configured_ai_python
+from apps.backend.app.runtime_paths import model_dir
 
 
 @dataclass(frozen=True)
@@ -52,7 +54,7 @@ class AiRuntimeStatus:
 
 
 def ai_python(root: Path) -> Path:
-    return root / ".venv-ai" / "Scripts" / "python.exe"
+    return configured_ai_python(root)
 
 
 def package_status(package: str, required_version: str | None, python_executable: Path | None = None) -> AiPackageStatus:
@@ -168,7 +170,7 @@ def file_sha256(path: Path) -> str:
 
 def runtime_status(root: Path, registry: dict) -> AiRuntimeStatus:
     python_executable = ai_python(root)
-    models_dir = root / ".local-tools" / "models"
+    models_dir = model_dir(root)
     artifacts_dir = root / ".local-data" / "ai-artifacts"
     primary_runtime_states = {"approved primary pilot", "technical evaluation only"}
     primary_readiness_states = {

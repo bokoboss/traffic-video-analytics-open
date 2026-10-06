@@ -8,7 +8,7 @@
 | Certification | Formal confirmation of an exact result version |
 | PTS | Presentation timestamp from the media timebase |
 | ROI | Region of interest |
-| Counting line | Undirected geometry with explicit Side A/Side B transitions |
+| Counting line | Directed geometry used for crossing events |
 | Entry/Exit zone | Areas used to infer movement |
 | Movement | User-defined entry-to-exit path such as NB-L |
 | Technical duplicate | Same event inserted more than once by retry |

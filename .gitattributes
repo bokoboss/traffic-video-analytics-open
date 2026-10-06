@@ -1,4 +1,6 @@
 * text=auto
+LICENSE text eol=lf
+packages/portable/licenses/** text eol=lf
 
 *.py      text eol=lf
 *.toml    text eol=lf

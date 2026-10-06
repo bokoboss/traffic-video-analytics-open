@@ -1,57 +1,31 @@
-# Portable build and runtime boundary
+# Portable build and runtime
 
-## What P1 publishes
+This public repository contains the corresponding application and build source from
+`ec1632349e7b6a121b678b2ba9e36a2eab273f66` for the frozen Windows 11 x64 `0.1.0-pilot` artifact.
 
-The public source contains the application source, database migrations,
-frontend, worker boundary, launcher scripts, runtime probes, dependency
-manifests, model/provenance registry, synthetic fixtures, and validation tools.
-The launcher resolves approved runtimes from operator-configured or
-repository-local ignored directories and keeps operational state outside Git.
+For a source checkout, follow BUILDING.md. Portable builds use Python 3.12.10,
+the 61-distribution hash lock in packages/portable/windows-x64-cp312-runtime.lock.json,
+the locked frontend graph in pnpm-lock.yaml, and the source-controlled builder.
+Prepare an approved wheelhouse matching every lock filename/hash. No private
+history, media or database is required.
 
-The source is therefore inspectable and buildable from a clean public checkout
-without access to private history or private data.
+```powershell
+pnpm install --frozen-lockfile
+pnpm run build:frontend
+python scripts/build_portable_distribution.py --build-mode development --wheelhouse <approved-wheelhouse> --accept-downloads
+```
 
-## What P1 does not bundle
+Development output is explicitly non-qualifiable. A public checkout cannot use
+the private commit as its own qualification HEAD: its public Git identity is
+different. Future qualification must explicitly select that public HEAD and an
+accepted ancestor with --expected-source-sha and --accepted-baseline-sha.
+The qualified 0.1.0-pilot binary was built from the frozen private source identity above; this public history intentionally has a different Git identity.
 
-The first public source snapshot deliberately does not contain or download:
+The builder pins acquisition identities for CPython, BtbN FFmpeg, MSVC and
+YOLO11n; the runtime lock pins Python wheels. It compiles frontend assets and
+uses the portable launcher/static server. Normal startup does not download.
+Use START_TRAFFIC_VIDEO_ANALYTICS.bat in an extracted portable package, and
+STOP_TRAFFIC_VIDEO_ANALYTICS.bat to stop owned application processes.
 
-- Node.js or pnpm binaries;
-- FFmpeg/ffprobe binaries;
-- PyTorch, CUDA, or other AI runtime wheels;
-- Ultralytics, RT-DETR, MMDetection, tracker, or other package binaries;
-- detector/tracker weights; or
-- survey video, customer media, datasets, databases, evidence, or exports.
-
-These items have separate license, provenance, platform, and redistribution
-requirements. `model_registry.json` records candidate source, versions, hashes
-when known, dataset provenance, and weight policy; it is not a license grant.
-
-## Local runtime preparation
-
-1. Prepare an approved Python installation and create `.venv`.
-2. Prepare an approved Node.js runtime in `TVA_NODE_DIR`, on `PATH`, or under
-   the ignored `.local-tools/node` directory.
-3. Prepare pnpm `11.9.0` through `TVA_PNPM_CMD`, `PATH`, or the ignored
-   `.local-tools/pnpm/pnpm.cmd` path. The included
-   `scripts/prepare_portable_pnpm.py` can verify and prepare that ignored
-   runtime from the official npm registry after explicit operator consent.
-4. Install FFmpeg/ffprobe separately when media operations are required. The
-   included preparation script can verify an ignored local runtime, but does
-   not place binaries in Git.
-5. Install optional AI packages and weights only when their source, hash,
-   license, and redistribution basis have been reviewed. Keep them in ignored
-   local runtime/data directories.
-6. Run `setup_app.bat` and the validation commands in `BUILDING.md`.
-
-## Corresponding-source assessment
-
-The P1 candidate includes all application and launcher source present at the
-accepted Pilot baseline and the preparation/provenance code that is tracked at
-that baseline. It is suitable as the public source for the source-built pilot
-workflow.
-
-There is no final single-file installer or complete bundled-runtime packager in
-this baseline. A future portable distribution must add and review a clearly
-separated packaging change, publish its source and notices, and document the
-exact runtime and binary redistribution basis. P1 does not silently claim that
-gap is closed.
+Model weights, runtime binaries and ZIP artifacts are excluded from this tree.
+For the 0.1.0-pilot distribution, the exact FFmpeg corresponding-source/build bundle is published as a separate release asset, and the owner has confirmed the Ultralytics AGPL/public-source route, MSVC redistribution entitlement, and applicable NVIDIA CUDA/cuDNN terms/notices. The packaged artifact retains detailed third-party license/provenance inventories. This document records engineering release evidence and is not legal advice.

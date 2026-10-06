@@ -5,7 +5,9 @@
     "repository_license": "AGPL-3.0-only",
     "normal_startup_downloads_models": false,
     "weights_committed_to_git": false,
-    "runtime_artifacts_committed_to_git": false
+    "runtime_artifacts_committed_to_git": false,
+    "milestone_6_status": "blocked",
+    "issue_10_status": "open"
   },
   "models": [
     {

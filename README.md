@@ -72,12 +72,9 @@ synthetic fixtures and public-safe tests needed to inspect and validate the
 pilot source. See [`docs/BUILDING.md`](docs/BUILDING.md) and
 [`docs/SOURCE_SNAPSHOT.md`](docs/SOURCE_SNAPSHOT.md).
 
-P1 does not publish a single-file installer or a complete bundled runtime.
-Node.js, pnpm, FFmpeg, PyTorch/CUDA, optional AI packages and model weights
-must be acquired and verified under their own licenses outside Git. The
-included launcher and preparation scripts document the current local runtime
-contract; the remaining packaging gap is explicit in
-[`docs/PORTABLE_BUILD.md`](docs/PORTABLE_BUILD.md).
+This repository includes the portable builder, verifier, helpers and dependency
+locks for the frozen 0.1.0-pilot distribution. Runtime binaries and model weights
+remain separate licensed artifacts. Follow docs/PORTABLE_BUILD.md for source builds. For 0.1.0-pilot, binary distribution is paired with this public corresponding source, the recorded FFmpeg corresponding-source/build bundle, and the owner-confirmed MSVC/NVIDIA/Ultralytics distribution decisions. Release artifacts retain their own third-party notices and provenance.
 
 ## Privacy and licensing
 

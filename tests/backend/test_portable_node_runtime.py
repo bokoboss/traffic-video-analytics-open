@@ -95,7 +95,7 @@ def test_path_resolution_supports_spaces_and_ampersand(tmp_path: Path, monkeypat
 
 
 def test_pnpm_managed_runtime_fallback_requires_verified_layout(tmp_path: Path) -> None:
-    base = tmp_path / "managed-runtimes" / "primary-runtime" / "dependencies"
+    base = tmp_path / "codex-runtimes" / "codex-primary-runtime" / "dependencies"
     pnpm_dir = base / "bin" / "fallback"
     node_dir = base / "node" / "bin"
     touch(pnpm_dir / "pnpm.cmd")
@@ -157,9 +157,9 @@ def test_damaged_repository_local_pnpm_blocks_path_fallback(tmp_path: Path) -> N
 
 @pytest.mark.skipif(os.name != "nt", reason="Windows command wrapping only applies to .cmd launchers")
 def test_windows_cmd_wrapping_quotes_paths_with_ampersand() -> None:
-    command = _subprocess_command([r"C:\project & data\.local-tools\pnpm\pnpm.cmd", "--version"])
+    command = _subprocess_command([r"D:\A&B\traffic-video-analytics\.local-tools\pnpm\pnpm.cmd", "--version"])
     assert isinstance(command, str)
-    assert command.startswith('"C:\\project & data\\.local-tools\\pnpm\\pnpm.cmd"')
+    assert command.startswith('"D:\\A&B\\traffic-video-analytics\\.local-tools\\pnpm\\pnpm.cmd"')
     assert '"--version"' in command
 
 

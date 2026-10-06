@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import json
+import shutil
 import sqlite3
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from fastapi.testclient import TestClient
+import pytest
 
 from apps.backend.app.db import connect, migrate
 from apps.backend.app.main import create_app
@@ -12,7 +14,8 @@ from apps.backend.app.services import FoundationService
 from apps.backend.app.worker_heartbeat import upsert_worker_heartbeat
 from apps.worker.processing_worker import run_worker
 from scripts.create_support_bundle import sanitize
-from scripts.database_backup import _backup, _restore
+import scripts.database_backup as database_backup
+from scripts.database_backup import _backup, _integrity_check, _restore
 
 
 def _create_project_with_scene(client: TestClient) -> dict:
@@ -226,8 +229,123 @@ def test_backup_restore_creates_integrity_checked_safety_copy(tmp_path: Path) ->
     connection.close()
 
 
+def test_restore_safety_copy_captures_committed_wal_state(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    database = tmp_path / "tva.sqlite3"
+    connection = sqlite3.connect(database)
+    connection.execute("CREATE TABLE values_table(value TEXT NOT NULL)")
+    connection.execute("INSERT INTO values_table(value) VALUES ('before')")
+    connection.commit()
+    connection.execute("PRAGMA journal_mode=WAL")
+    connection.execute("PRAGMA wal_autocheckpoint=0")
+    connection.commit()
+    connection.close()
+
+    backup = tmp_path / "backup.sqlite3"
+    _backup(database, backup)
+
+    reader = sqlite3.connect(database)
+    reader.execute("BEGIN")
+    assert reader.execute("SELECT value FROM values_table").fetchall() == [("before",)]
+    writer = sqlite3.connect(database)
+    assert writer.execute("PRAGMA journal_mode").fetchone()[0].lower() == "wal"
+    writer.execute("PRAGMA wal_autocheckpoint=0")
+    writer.execute("INSERT INTO values_table(value) VALUES ('committed-only-in-wal')")
+    writer.commit()
+    wal = Path(f"{database}-wal")
+    shm = Path(f"{database}-shm")
+    assert wal.is_file()
+    assert shm.is_file()
+
+    main_only = tmp_path / "main-only.sqlite3"
+    shutil.copy2(database, main_only)
+    immutable = sqlite3.connect(f"file:{main_only.as_posix()}?immutable=1", uri=True)
+    try:
+        assert immutable.execute("SELECT value FROM values_table ORDER BY rowid").fetchall() == [("before",)]
+    finally:
+        immutable.close()
+
+    real_replace = database_backup.os.replace
+
+    def block_destination_replace(source: str, destination: str) -> None:
+        if Path(destination) == database:
+            raise PermissionError("replacement blocked for safety-copy test")
+        real_replace(source, destination)
+
+    monkeypatch.setattr(database_backup.os, "replace", block_destination_replace)
+    with pytest.raises(PermissionError, match="replacement blocked"):
+        _restore(backup, database)
+    safety_copies = list(tmp_path.glob("tva.sqlite3.pre-restore-*.bak"))
+    assert len(safety_copies) == 1
+    safety_copy = safety_copies[0]
+    _integrity_check(safety_copy)
+    safety_connection = sqlite3.connect(safety_copy)
+    try:
+        assert safety_connection.execute("SELECT value FROM values_table ORDER BY rowid").fetchall() == [
+            ("before",),
+            ("committed-only-in-wal",),
+        ]
+    finally:
+        safety_connection.close()
+
+    writer.close()
+    reader.rollback()
+    reader.close()
+    connection = sqlite3.connect(database)
+    try:
+        assert connection.execute("SELECT value FROM values_table ORDER BY rowid").fetchall() == [
+            ("before",),
+            ("committed-only-in-wal",),
+        ]
+    finally:
+        connection.close()
+
+
+def test_restore_removes_stale_sqlite_sidecars(tmp_path: Path) -> None:
+    database = tmp_path / "tva.sqlite3"
+    connection = sqlite3.connect(database)
+    connection.execute("CREATE TABLE values_table(value TEXT NOT NULL)")
+    connection.execute("INSERT INTO values_table(value) VALUES ('before')")
+    connection.commit()
+    connection.close()
+    backup = tmp_path / "backup.sqlite3"
+    _backup(database, backup)
+
+    reader = sqlite3.connect(database)
+    reader.execute("PRAGMA journal_mode=WAL")
+    reader.execute("BEGIN")
+    reader.execute("SELECT value FROM values_table").fetchall()
+    connection = sqlite3.connect(database)
+    connection.execute("INSERT INTO values_table(value) VALUES ('after')")
+    connection.commit()
+    wal = Path(f"{database}-wal")
+    shm = Path(f"{database}-shm")
+    assert wal.is_file()
+    assert shm.is_file()
+
+    stale_wal = tmp_path / "stale-wal"
+    stale_shm = tmp_path / "stale-shm"
+    shutil.copy2(wal, stale_wal)
+    shutil.copy2(shm, stale_shm)
+    connection.close()
+    reader.rollback()
+    reader.close()
+    shutil.copy2(stale_wal, wal)
+    shutil.copy2(stale_shm, shm)
+
+    restored = _restore(backup, database)
+    assert restored["operation"] == "restore"
+    assert not wal.exists()
+    assert not shm.exists()
+    connection = sqlite3.connect(database)
+    values = [row[0] for row in connection.execute("SELECT value FROM values_table ORDER BY rowid")]
+    connection.close()
+    assert values == ["before"]
+
+
 def test_support_bundle_sanitizer_removes_private_paths_and_tokens() -> None:
-    payload = sanitize({"path": r"D:\private\source.mp4", "message": r"token=abc123 D:\private\log.txt"})
+    payload = sanitize({"path": r"D:\private\source.mp4", "message": r"Bearer abc123 D:\private\log.txt"})
     assert payload["path"] == "<redacted-local-path>"
     assert "abc123" not in payload["message"]
     assert "D:\\private" not in payload["message"]

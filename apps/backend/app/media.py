@@ -330,7 +330,9 @@ def _resolve_tool_with_source(name: str) -> tuple[Path, str] | None:
     for candidate in _configured_ffmpeg_candidates(name):
         if candidate.exists():
             return candidate, "TVA_FFMPEG_DIR"
-    repo_candidate = ROOT / ".local-tools" / "ffmpeg" / "bin" / _exe_name(name)
+    configured_root = os.getenv("TVA_SOURCE_ROOT") or os.getenv("TVA_APP_ROOT")
+    fallback_root = Path(configured_root).expanduser().resolve() if configured_root else ROOT
+    repo_candidate = fallback_root / ".local-tools" / "ffmpeg" / "bin" / _exe_name(name)
     if repo_candidate.exists():
         return repo_candidate, "repository_local"
     path = shutil.which(name)

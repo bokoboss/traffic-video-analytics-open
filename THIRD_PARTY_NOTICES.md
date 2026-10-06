@@ -1,58 +1,52 @@
 # Third-Party Notices
 
-This register separates application-source licensing from package, model,
-dataset and runtime provenance. It is an engineering notice, not legal advice.
+This register records engineering license and provenance information for the
+0.1.0-pilot source and portable distribution. It is not legal advice.
 
-## Application source
+## Project license
 
-Traffic Video Analytics source code is licensed under `AGPL-3.0-only`. A
-modified or network-accessible version must comply with the corresponding-source
-and notice requirements of the AGPL. The complete license text is in
-[`LICENSE`](LICENSE).
+Traffic Video Analytics application source is licensed AGPL-3.0-only. The
+complete license is in `LICENSE`. This public repository is the corresponding
+application/build source for the 0.1.0-pilot distribution.
 
-## Packages
+## Portable 0.1.0-pilot distribution
 
-Pinned package versions and the current license register are maintained in
-[`docs/development/dependency_license_register.md`](docs/development/dependency_license_register.md),
-`requirements-*.txt`, `package.json`, and `pnpm-lock.yaml`.
+The portable ZIP contains third-party runtime components that retain their own
+licenses. The package itself carries a detailed `THIRD_PARTY_LICENSES.json`
+and copied license/notice files. The source tree also records exact runtime
+identities in `packages/portable/windows-x64-cp312-runtime.lock.json`,
+`packages/portable/source-snapshot.json`, and `model_registry.json`.
 
-| Component | Role | Source/package license | Included in Git |
-|---|---|---|---|
-| FastAPI, Pydantic | API and schema | MIT | Application imports only |
-| Uvicorn | Local ASGI server | BSD-3-Clause | Application imports only |
-| React / React DOM | UI runtime | MIT | Application imports only |
-| Vite / TypeScript | Frontend build | MIT / Apache-2.0 | Application imports only |
-| Playwright | Browser validation | Apache-2.0 | Application imports only |
-| `trackers` | Optional ByteTrack/BoT-SORT adapter | Apache-2.0 | Not vendored |
-| `supervision` | Optional detection bridge | MIT | Not vendored |
-| OpenMMLab MMDetection | Optional RTMDet candidate | Apache-2.0 | Not vendored |
-| RT-DETR official implementation | Optional detector candidate | Apache-2.0 | Not vendored |
+| Component | Release identity / role | Release treatment |
+|---|---|---|
+| Ultralytics | 8.4.103; YOLO11n detector with `yolo11n.pt` | AGPL route selected for the pilot; corresponding application/build source is public; model identity/hash is in `model_registry.json` |
+| PyTorch / torchvision | 2.10.0+cu128 / 0.25.0+cu128 | Bundled in the locked Python runtime; PyTorch notices and NVIDIA runtime-component evidence are packaged |
+| Roboflow trackers | 2.5.0.post0 | Bundled tracker runtime; Apache-2.0 package evidence is packaged |
+| supervision | 0.29.1 | Bundled runtime dependency; MIT package evidence is packaged |
+| BtbN FFmpeg | `ffmpeg-n8.1.2-50-g1a748fe2cd-win64-lgpl-8.1.zip`, tag `autobuild-2026-08-31-13-27` | Bundled FFmpeg/ffprobe; exact artifact SHA-256 `f6274bbd9c247f9e90c1bbed066b03ed4a3907cece2fb91be6dd352393936365`; exact corresponding-source/build bundle is a separate release asset |
+| Microsoft VC runtime | 14.50.35719 app-local runtime files | Bundled; owner confirmed redistribution entitlement for this release |
+| NVIDIA CUDA/cuDNN runtime components | Components provided through the locked PyTorch/TorchVision runtime | Bundled where required by the qualified GPU runtime; component inventory/notices are packaged; owner accepted applicable redistribution terms/notices |
+| React / React DOM | 19.2.0 | Compiled frontend runtime; MIT license evidence is packaged |
+| lucide-react | 0.468.0 | Compiled frontend runtime; ISC license evidence is packaged |
+| scheduler | 0.27.0 | React DOM runtime dependency; MIT license evidence is packaged |
 
-## Models and datasets
+The locked portable runtime contains 61 Python distributions. The authoritative
+per-distribution filenames, versions and hashes are the portable runtime lock;
+the built artifact carries the complete resolved license inventory.
 
-`model_registry.json` records candidate implementation source, versions,
-weight identifiers/hashes when known, dataset provenance, class limitations,
-and redistribution status. A model-weight license is recorded separately from
-the application license. The registry does not grant permission to download
-or redistribute a weight.
+## Model and dataset boundary
 
-The optional candidates use COCO-pretrained or COCO-oriented metadata for
-coarse observable classes. That does not establish complete Thai TIMS
-classification or traffic-survey accuracy. No model weights, datasets, smoke
-media, or benchmark media are committed here.
+The pilot's YOLO11n weight is COCO-pretrained. This does not establish complete
+Thai TIMS classification or formal detector/counting accuracy. The release does
+not redistribute COCO training data.
 
-## External runtimes
+Fallback detector/tracker candidates documented in `model_registry.json` are
+not represented as qualified production alternatives unless their exact
+runtime and weight provenance is separately established.
 
-FFmpeg/ffprobe are optional external executables. Their license depends on the
-build configuration; the project does not bundle or silently download them.
-PyTorch/CUDA wheels and NVIDIA components retain their own license and
-redistribution terms and are prepared only in ignored local runtime
-directories. Node.js and pnpm are also external runtimes; see
-[`docs/PORTABLE_BUILD.md`](docs/PORTABLE_BUILD.md).
+## Source/runtime separation
 
-## Dataset and media boundary
-
-Private or rights-controlled media remains outside Git and is referenced by
-opaque IDs, hashes, or local paths only in local operational records. Public
-fixtures in this repository are synthetic or metadata-only and contain no
-survey video, customer data, database, export, or evidence image.
+Runtime binaries, model weights, databases, private media, generated evidence
+and local build state are intentionally excluded from this public Git tree.
+They may appear only in separately qualified release artifacts with their own
+provenance and notices.

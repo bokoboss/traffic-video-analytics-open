@@ -87,7 +87,7 @@ def main() -> None:
         "",
     ]
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+    OUT.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"Wrote {OUT}")
 
 
