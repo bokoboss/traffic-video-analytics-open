@@ -32,8 +32,8 @@ that described the license as provisional are superseded by ADR 0016.
 
 | Tool | Version | Purpose | License status |
 |---|---:|---|---|
-| FFmpeg `ffprobe` | Local executable when installed | Media metadata and stream timebase inspection | FFmpeg is LGPL/GPL depending on build configuration; binaries are not bundled or downloaded at runtime |
-| FFmpeg `ffmpeg` | Local executable when installed | Reference-frame extraction for scene setup | FFmpeg is LGPL/GPL depending on build configuration; binaries are not bundled or downloaded at runtime |
+| FFmpeg `ffprobe` | Source checkout: local executable; portable 0.1.0-pilot: pinned BtbN LGPL build | Media metadata and stream timebase inspection | Portable distribution bundles the exact qualified BtbN LGPL artifact; corresponding-source/build bundle is distributed separately |
+| FFmpeg `ffmpeg` | Source checkout: local executable; portable 0.1.0-pilot: pinned BtbN LGPL build | Reference-frame extraction and packaged media runtime | Portable distribution bundles the exact qualified BtbN LGPL artifact; corresponding-source/build bundle is distributed separately |
 
 ## Milestone 5 Benchmark Candidates
 
@@ -53,10 +53,12 @@ that described the license as provisional are superseded by ADR 0016.
 | opencv-python | 4.12.0.88, optional AI runtime pin | Vision dependency required by Ultralytics and supervision | Apache-2.0 package; OpenCV is Apache-2.0, installed only in ignored `.venv-ai` |
 | MMDetection `mmdet` | 3.3.0, optional only | RTMDet fallback evaluation candidate | Apache-2.0 package; not installed by normal app setup |
 
+## Portable 0.1.0-pilot distribution
+
+The portable release differs from a development source checkout: it bundles the locked 61-distribution Python runtime, Ultralytics 8.4.103 with the pinned YOLO11n weight, trackers 2.5.0.post0, PyTorch 2.10.0+cu128, torchvision 0.25.0+cu128, the pinned BtbN FFmpeg LGPL build, app-local MSVC runtime files, and the NVIDIA CUDA/cuDNN runtime components required by the qualified PyTorch stack. Exact package identities/hashes and copied license evidence are recorded by the portable runtime lock, model registry, builder/verifier and packaged third-party inventory.
+
+The owner selected the Ultralytics AGPL/public-source route and confirmed the recorded MSVC and NVIDIA redistribution terms/entitlements for this pilot release. The FFmpeg corresponding-source/build bundle is distributed separately from the application ZIP.
+
 ## Excluded
 
-Ultralytics, YOLO, ByteTrack, BoT-SORT, RT-DETR, RTMDet, PyTorch/CUDA AI
-wheels, CUDA Toolkit, RTSP, HLS and YouTube integrations are not production
-workflow dependencies in this milestone. Milestone 5.2B.1 adds optional AI
-runtime and smoke qualification tooling, but normal app startup remains
-model-free.
+RTSP, HLS and YouTube integrations are not included in 0.1.0-pilot. The NVIDIA CUDA Toolkit and display driver are not bundled. Fallback RT-DETR/RTMDet checkpoints are not distributed unless their exact weight provenance is separately established.

@@ -4,6 +4,6 @@
   "originating_private_source_sha": "ec1632349e7b6a121b678b2ba9e36a2eab273f66",
   "accepted_baseline_sha": "8229b50396366e62fb6b1c564a36318929d9f533",
   "original_zip_sha256": "e07428c460197ef1278d19b7131df5325f6365101daf0f43d76539d115a138ab",
-  "publication_status": "LOCAL_CANDIDATE_NOT_PUBLISHED",
+  "publication_status": "PUBLIC_CORRESPONDING_SOURCE",
   "public_commit_will_differ": true
 }

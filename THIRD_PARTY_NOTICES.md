@@ -1,52 +1,52 @@
 # Third-Party Notices
 
-This register is an engineering notice file for source, package, model-weight,
-dataset, and external-runtime provenance. It is not legal advice.
+This register records engineering license and provenance information for the
+0.1.0-pilot source and portable distribution. It is not legal advice.
 
-## Project License
+## Project license
 
-Traffic Video Analytics source code is licensed as AGPL-3.0-only as of
-Milestone 5.2B. Network-accessible deployments, binary distributions, and
-modified versions must provide corresponding source as required by AGPL-3.0.
+Traffic Video Analytics application source is licensed AGPL-3.0-only. The
+complete license is in `LICENSE`. This public repository is the corresponding
+application/build source for the 0.1.0-pilot distribution.
 
-## Core Application Dependencies
+## Portable 0.1.0-pilot distribution
 
-The core application dependency register remains in
-`docs/development/dependency_license_register.md`.
+The portable ZIP contains third-party runtime components that retain their own
+licenses. The package itself carries a detailed `THIRD_PARTY_LICENSES.json`
+and copied license/notice files. The source tree also records exact runtime
+identities in `packages/portable/windows-x64-cp312-runtime.lock.json`,
+`packages/portable/source-snapshot.json`, and `model_registry.json`.
 
-## AI Pilot Candidates
+| Component | Release identity / role | Release treatment |
+|---|---|---|
+| Ultralytics | 8.4.103; YOLO11n detector with `yolo11n.pt` | AGPL route selected for the pilot; corresponding application/build source is public; model identity/hash is in `model_registry.json` |
+| PyTorch / torchvision | 2.10.0+cu128 / 0.25.0+cu128 | Bundled in the locked Python runtime; PyTorch notices and NVIDIA runtime-component evidence are packaged |
+| Roboflow trackers | 2.5.0.post0 | Bundled tracker runtime; Apache-2.0 package evidence is packaged |
+| supervision | 0.29.1 | Bundled runtime dependency; MIT package evidence is packaged |
+| BtbN FFmpeg | `ffmpeg-n8.1.2-50-g1a748fe2cd-win64-lgpl-8.1.zip`, tag `autobuild-2026-08-31-13-27` | Bundled FFmpeg/ffprobe; exact artifact SHA-256 `f6274bbd9c247f9e90c1bbed066b03ed4a3907cece2fb91be6dd352393936365`; exact corresponding-source/build bundle is a separate release asset |
+| Microsoft VC runtime | 14.50.35719 app-local runtime files | Bundled; owner confirmed redistribution entitlement for this release |
+| NVIDIA CUDA/cuDNN runtime components | Components provided through the locked PyTorch/TorchVision runtime | Bundled where required by the qualified GPU runtime; component inventory/notices are packaged; owner accepted applicable redistribution terms/notices |
+| React / React DOM | 19.2.0 | Compiled frontend runtime; MIT license evidence is packaged |
+| lucide-react | 0.468.0 | Compiled frontend runtime; ISC license evidence is packaged |
+| scheduler | 0.27.0 | React DOM runtime dependency; MIT license evidence is packaged |
 
-AI packages and model weights are optional and are not installed by normal app
-startup. Runtime files, model binaries, downloaded datasets, generated smoke
-media, normalized artifacts, and benchmark outputs must remain outside Git.
+The locked portable runtime contains 61 Python distributions. The authoritative
+per-distribution filenames, versions and hashes are the portable runtime lock;
+the built artifact carries the complete resolved license inventory.
 
-| Component | Role | License status | Included in Git |
-|---|---|---|---|
-| Ultralytics YOLO | detector candidate | AGPL-3.0 by default or Enterprise license | No package or weight binaries |
-| PyTorch / torchvision CUDA 12.8 wheels | optional inference runtime | BSD-style PyTorch license plus NVIDIA CUDA runtime components in wheel distribution | No package binaries |
-| supervision | smoke adapter utility | MIT package | No package binaries |
-| RT-DETR / RT-DETRv2 official implementation | detector fallback candidate | Apache-2.0 source; weight terms require per-weight provenance | No package or weight binaries |
-| MMDetection RTMDet | detector fallback candidate | Apache-2.0 source/package; checkpoint provenance required | No package or weight binaries |
-| Roboflow `trackers` ByteTrack/BoT-SORT | tracker candidate | Apache-2.0 package | No package binaries |
-| FoundationVision ByteTrack | tracker reference | MIT source | No source vendored |
-| FFmpeg gyan.dev essentials build | local media runtime | GPL-enabled build; accepted only as ignored local runtime | No binaries |
+## Model and dataset boundary
 
-## Dataset and Weight Notices
+The pilot's YOLO11n weight is COCO-pretrained. This does not establish complete
+Thai TIMS classification or formal detector/counting accuracy. The release does
+not redistribute COCO training data.
 
-COCO-pretrained detector weights can support coarse observable classes such as
-person, bicycle, motorcycle, car, bus, and truck. They do not establish full
-Thai TIMS vehicle classification and cannot be treated as authority-ready
-traffic-survey evidence without later specialized training, validation, and
-human certification.
+Fallback detector/tracker candidates documented in `model_registry.json` are
+not represented as qualified production alternatives unless their exact
+runtime and weight provenance is separately established.
 
-Milestone 5.2B.1 records the YOLO11n weight SHA-256 in `model_registry.json`.
-The weight file remains in ignored `.local-tools/models/` and is not included
-in Git.
+## Source/runtime separation
 
-## Smoke Media Notice
-
-Milestone 5.2B.1 local smoke media is generated outside Git from the public
-Ultralytics example image at `https://ultralytics.com/images/bus.jpg`. The
-fixture exists only to prove runtime wiring, FFmpeg frame extraction, YOLO11n
-inference, ByteTrack tracking, and normalized artifact generation. It is not an
-approved survey clip, dataset, benchmark, training input, or certified evidence.
+Runtime binaries, model weights, databases, private media, generated evidence
+and local build state are intentionally excluded from this public Git tree.
+They may appear only in separately qualified release artifacts with their own
+provenance and notices.

@@ -1,6 +1,6 @@
 # Portable build and runtime
 
-This candidate contains the corresponding application and build source from
+This public repository contains the corresponding application and build source from
 `ec1632349e7b6a121b678b2ba9e36a2eab273f66` for the frozen Windows 11 x64 `0.1.0-pilot` artifact.
 
 For a source checkout, follow BUILDING.md. Portable builds use Python 3.12.10,
@@ -19,7 +19,7 @@ Development output is explicitly non-qualifiable. A public checkout cannot use
 the private commit as its own qualification HEAD: its public Git identity is
 different. Future qualification must explicitly select that public HEAD and an
 accepted ancestor with --expected-source-sha and --accepted-baseline-sha.
-This R19 task does not rebuild or alter the already-qualified binary ZIP.
+The qualified 0.1.0-pilot binary was built from the frozen private source identity above; this public history intentionally has a different Git identity.
 
 The builder pins acquisition identities for CPython, BtbN FFmpeg, MSVC and
 YOLO11n; the runtime lock pins Python wheels. It compiles frontend assets and
@@ -28,6 +28,4 @@ Use START_TRAFFIC_VIDEO_ANALYTICS.bat in an extracted portable package, and
 STOP_TRAFFIC_VIDEO_ANALYTICS.bat to stop owned application processes.
 
 Model weights, runtime binaries and ZIP artifacts are excluded from this tree.
-Binary redistribution requires exact FFmpeg corresponding source/build material,
-Ultralytics licensing route acceptance, MSVC entitlement, and applicable NVIDIA
-terms/notices. The source candidate does not claim these gates passed.
+For the 0.1.0-pilot distribution, the exact FFmpeg corresponding-source/build bundle is published as a separate release asset, and the owner has confirmed the Ultralytics AGPL/public-source route, MSVC redistribution entitlement, and applicable NVIDIA CUDA/cuDNN terms/notices. The packaged artifact retains detailed third-party license/provenance inventories. This document records engineering release evidence and is not legal advice.

@@ -72,11 +72,9 @@ synthetic fixtures and public-safe tests needed to inspect and validate the
 pilot source. See [`docs/BUILDING.md`](docs/BUILDING.md) and
 [`docs/SOURCE_SNAPSHOT.md`](docs/SOURCE_SNAPSHOT.md).
 
-This candidate includes the portable builder, verifier, helpers and dependency
+This repository includes the portable builder, verifier, helpers and dependency
 locks for the frozen 0.1.0-pilot distribution. Runtime binaries and model weights
-remain separate licensed artifacts. Follow docs/PORTABLE_BUILD.md for source
-builds; binary distribution remains subject to the recorded source and human
-license approval gates. This candidate has not been published.
+remain separate licensed artifacts. Follow docs/PORTABLE_BUILD.md for source builds. For 0.1.0-pilot, binary distribution is paired with this public corresponding source, the recorded FFmpeg corresponding-source/build bundle, and the owner-confirmed MSVC/NVIDIA/Ultralytics distribution decisions. Release artifacts retain their own third-party notices and provenance.
 
 ## Privacy and licensing
 
